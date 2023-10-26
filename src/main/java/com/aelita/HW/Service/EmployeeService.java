@@ -6,10 +6,12 @@ import com.aelita.HW.Exsception.EmployeeNotFoundException;
 import com.aelita.HW.Exsception.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Arrays.stream;
 
 @Service
 public class EmployeeService implements ServiceN{
@@ -17,11 +19,9 @@ public class EmployeeService implements ServiceN{
     Map<String, Employee> numsEmpl = new HashMap<>();
 
 
-
-
     @Override
-    public Employee add(String firstName, String secondName) throws EmployeeAlreadyAddedException {
-        Employee employee = new Employee(firstName, secondName);
+    public Employee add(String firstName, String secondName, Integer salary, Integer department) throws EmployeeAlreadyAddedException {
+        Employee employee = new Employee(firstName, salary, department, secondName);
         if (numsEmpl.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException("Сотрудник уже существует");
         }
@@ -36,8 +36,8 @@ public class EmployeeService implements ServiceN{
     }
 
     @Override
-    public Employee delete(String firstName, String secondName) {
-        Employee employee = new Employee(firstName, secondName);
+    public Employee delete(String firstName, String secondName, Integer salary, Integer department) {
+        Employee employee = new Employee(firstName, salary, department, secondName);
         if (numsEmpl.containsKey(employee.getFullName())) {
             return numsEmpl.remove(employee.getFullName());
 
@@ -46,8 +46,8 @@ public class EmployeeService implements ServiceN{
     }
 
     @Override
-    public Employee find(String firstName, String secondName) {
-        Employee employee = new Employee(firstName, secondName);
+    public Employee find(String firstName, String secondName, Integer salary, Integer department) {
+        Employee employee = new Employee(firstName, salary, department, secondName);
         if (numsEmpl.containsKey(employee.getFullName())) {
             return numsEmpl.get(employee.getFullName());
         }
@@ -59,4 +59,31 @@ public class EmployeeService implements ServiceN{
 
         return Collections.unmodifiableCollection(numsEmpl.values());
     }
+
+    @Override
+    public Optional<Employee> getMaxSalaryByDepartment(int department) {
+        return showAll().stream()
+                .filter(e->e.getDepartment()==department )
+                .max(Comparator.comparing(Employee::getSalary));
+    }
+
+    @Override
+    public Optional<Employee> getMinSalaryByDepartment(int department) {
+        return showAll().stream()
+                .filter(e->e.getDepartment()==department )
+                .min(Comparator.comparing(Employee::getSalary));
+    }
+
+    @Override
+    public Stream<Employee> getAllEmployeesByDepartment(int department) {
+        return showAll().stream()
+                .filter(e->e.getDepartment()==department);
+    }
+    @Override
+    public Map<Integer,List<Employee>> getAllEmployeesByDepartments() {
+        return showAll().stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment));
+    }
+
+
 }

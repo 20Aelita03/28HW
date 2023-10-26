@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class Employee {
     private final String firstName;
+    private final Integer salary;
+    private final Integer department;
 
     public String getFullName(){
         return firstName + " " + secondName;}
@@ -12,7 +14,9 @@ public class Employee {
 
 
 
-    public Employee(String firstName, String secondName) {
+    public Employee(String firstName, Integer salary, Integer department, String secondName) {
+        this.salary = salary;
+        this.department = department;
         this.secondName = secondName ;
 
         this.firstName = firstName;
@@ -25,6 +29,14 @@ public class Employee {
 
     public String getSecondName() {
         return secondName;
+    }
+
+    public Integer getSalary() {
+        return salary;
+    }
+
+    public Integer getDepartment() {
+        return department;
     }
 
     @Override
