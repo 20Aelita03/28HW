@@ -24,4 +24,5 @@ public interface ServiceN {
     Stream<Employee> getAllEmployeesByDepartment(int department);
     Map<Integer,List<Employee>> getAllEmployeesByDepartments();
 
+
 }

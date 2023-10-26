@@ -78,6 +78,7 @@ public class EmployeeService implements ServiceN{
     public Stream<Employee> getAllEmployeesByDepartment(int department) {
         return showAll().stream()
                 .filter(e->e.getDepartment()==department);
+
     }
     @Override
     public Map<Integer,List<Employee>> getAllEmployeesByDepartments() {

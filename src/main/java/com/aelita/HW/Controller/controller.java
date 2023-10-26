@@ -65,4 +65,5 @@ public class controller {
         return serviceN.getAllEmployeesByDepartments();
         //http://localhost:8080/employee/departments/all
     }
+
 }
